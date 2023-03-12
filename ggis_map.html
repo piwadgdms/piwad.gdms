@@ -21,7 +21,7 @@
             margin: 0;
         }
         </style>
-        <title>Pili Water District</title>
+        <title>PIWAD|GDMS MAP</title>
     </head>
     <body>
         <div id="map">
@@ -180,11 +180,11 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">acct_code</th>\
+                        <th scope="row">Account Code</th>\
                         <td>' + (feature.properties['acct_code'] !== null ? autolinker.link(feature.properties['acct_code'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">remarks</th>\
+                        <th scope="row">Remarks</th>\
                         <td>' + (feature.properties['remarks'] !== null ? autolinker.link(feature.properties['remarks'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
