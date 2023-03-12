@@ -6,11 +6,12 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/filter.css">
 <link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
@@ -26,7 +27,7 @@
         <div id="map">
         </div>
         <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -34,14 +35,18 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
+        <script src="js/proj4.js"></script>
+        <script src="js/proj4leaflet.js"></script>
         <script src="js/leaflet-search.js"></script>
         <script src="js/tailDT.js"></script>
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
-        <script src="data/websc_1.js"></script>
-        <script src="data/webwm_2.js"></script>
-        <script src="data/pipelines_3.js"></script>
+        <script src="data/barangay_1.js"></script>
+        <script src="data/webscc_2.js"></script>
+        <script src="data/webwm_3.js"></script>
+        <script src="data/pipelines_4.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -57,13 +62,21 @@
                 fillOpacity: 1
               });
             }
+            highlightLayer.openPopup();
         }
+        var crs = new L.Proj.CRS('USER:100001', '+proj=utm +zone=51 +ellps=clrk66 +towgs84=-133,-77,-51,0,0,0,0 +units=m +no_defs', {
+            resolutions: [2800, 1400, 700, 350, 175, 84, 42, 21, 11.2, 5.6, 2.8, 1.4, 0.7, 0.35, 0.14, 0.07],
+        });
         var map = L.map('map', {
+            crs: crs,
+            continuousWorld: false,
+            worldCopyJump: false, 
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[13.595836814470594,123.2432207467914],[13.603158105616874,123.25707718892949]]);
+        }).fitBounds([[13.534659049119247,123.20151008033227],[13.620671207871654,123.31784919732384]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var measureControl = new L.Control.Measure({
             position: 'topleft',
             primaryLengthUnit: 'meters',
@@ -92,644 +105,18 @@
         });
         layer_googleearthsatellite_0;
         map.addLayer(layer_googleearthsatellite_0);
-        function pop_websc_1(feature, layer) {
+        function pop_barangay_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
                     }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">acct_code</th>\
-                        <td>' + (feature.properties['acct_code'] !== null ? autolinker.link(feature.properties['acct_code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['remarks'] !== null ? autolinker.link(feature.properties['remarks'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">acct_no</th>\
-                        <td>' + (feature.properties['acct_no'] !== null ? autolinker.link(feature.properties['acct_no'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">class_type</th>\
-                        <td>' + (feature.properties['class_type'] !== null ? autolinker.link(feature.properties['class_type'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">name</th>\
-                        <td>' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">brgy_name</th>\
-                        <td>' + (feature.properties['brgy_name'] !== null ? autolinker.link(feature.properties['brgy_name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">mun_name</th>\
-                        <td>' + (feature.properties['mun_name'] !== null ? autolinker.link(feature.properties['mun_name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">status</th>\
-                        <td>' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
-        }
-
-        function style_websc_1_0(feature) {
-            switch(String(feature.properties['brgy_name'])) {
-                case 'ANAYAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(124,68,227,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'AYUGAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(201,98,155,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'BAGONG SIRANG':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(95,230,156,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'BANASI':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(34,54,204,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'BINANUAANAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(200,105,41,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'BINOBONG':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(109,216,207,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'CADLAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(67,104,203,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'CADLAN  ':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(203,73,103,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'CAPUCNASAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(104,204,54,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'CAROYROYAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(223,97,185,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'CURRY':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(50,189,231,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'DEL ROSARIO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(72,234,170,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'HIMAAO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(153,59,200,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'LA PURISIMA':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(208,56,114,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'MATAOROC':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(78,216,119,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'MAYAOPAYAWAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(37,221,34,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'MAYDASO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(97,194,202,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'NEW SAN ROQUE':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(32,151,230,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'OLD SAN ROQUE':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(60,221,184,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'PALESTINA':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(117,114,204,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'PAWILI':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(63,223,27,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAGRADA':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(212,136,37,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAGURONG':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(238,94,240,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN AGUSTIN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(168,239,36,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN ANTONIO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(229,107,115,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN ISIDRO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(57,131,227,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN JOSE':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(215,88,45,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN JOSE-2':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(238,223,104,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN JOSE-3':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(71,205,89,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN JUAN':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(209,185,125,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SAN VICENTE':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(202,80,226,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'SANTIAGO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(150,203,97,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'STO. DOMINGO':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(96,68,207,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'STO. NI�O':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(200,233,53,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'TAGBONG':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(119,16,214,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'TARIRIC':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(236,81,213,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'TINANGIS':
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(235,34,15,1.0)',
-                interactive: true,
-            }
-                    break;
-                default:
-                    return {
-                pane: 'pane_websc_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(217,222,76,1.0)',
-                interactive: true,
-            }
-                    break;
-            }
-        }
-        map.createPane('pane_websc_1');
-        map.getPane('pane_websc_1').style.zIndex = 401;
-        map.getPane('pane_websc_1').style['mix-blend-mode'] = 'normal';
-        var layer_websc_1 = new L.geoJson(json_websc_1, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_websc_1',
-            layerName: 'layer_websc_1',
-            pane: 'pane_websc_1',
-            onEachFeature: pop_websc_1,
-            style: style_websc_1_0,
-        });
-        bounds_group.addLayer(layer_websc_1);
-        map.addLayer(layer_websc_1);
-        function pop_webwm_2(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    for (i in e.target._eventParents) {
-                        e.target._eventParents[i].resetStyle(e.target);
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
                     }
                 },
                 mouseover: highlightFeature,
@@ -739,16 +126,745 @@
                         <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">barangay</th>\
+                        <td>' + (feature.properties['barangay'] !== null ? autolinker.link(feature.properties['barangay'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_barangay_1_0() {
+            return {
+                pane: 'pane_barangay_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,0,0,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_barangay_1');
+        map.getPane('pane_barangay_1').style.zIndex = 401;
+        map.getPane('pane_barangay_1').style['mix-blend-mode'] = 'normal';
+        var layer_barangay_1 = new L.geoJson(json_barangay_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_barangay_1',
+            layerName: 'layer_barangay_1',
+            pane: 'pane_barangay_1',
+            onEachFeature: pop_barangay_1,
+            style: style_barangay_1_0,
+        });
+        bounds_group.addLayer(layer_barangay_1);
+        map.addLayer(layer_barangay_1);
+        function pop_webscc_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">acct_code</th>\
+                        <td>' + (feature.properties['acct_code'] !== null ? autolinker.link(feature.properties['acct_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">remarks</th>\
+                        <td>' + (feature.properties['remarks'] !== null ? autolinker.link(feature.properties['remarks'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Account Number</th>\
+                        <td>' + (feature.properties['acct_no'] !== null ? autolinker.link(feature.properties['acct_no'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Customer Name</th>\
+                        <td>' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Barangay</th>\
+                        <td>' + (feature.properties['brgy_name'] !== null ? autolinker.link(feature.properties['brgy_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">type_class</th>\
+                        <td>' + (feature.properties['type_class'] !== null ? autolinker.link(feature.properties['type_class'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Status</th>\
+                        <td>' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">date_of_start</th>\
+                        <td>' + (feature.properties['date_of_start'] !== null ? autolinker.link(feature.properties['date_of_start'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">zone</th>\
+                        <td>' + (feature.properties['zone'] !== null ? autolinker.link(feature.properties['zone'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_webscc_2_0(feature) {
+            switch(String(feature.properties['brgy_name'])) {
+                case 'ANAYAN, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,54,174,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'AYUGAN, OCAMPO':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(79,215,147,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'BAGONG SIRANG, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(113,217,44,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'BANASI, BULA':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(118,234,159,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'BINANUAANAN, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(172,224,109,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'BINOBONG, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,85,219,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CADLAN, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(132,194,235,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CAPUCNASAN, MILAOR':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(183,113,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CAROYROYAN, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,202,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CURRY, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(24,24,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DEL ROSARIO, NAGA':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,129,163,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DEL ROSARIO, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,141,80,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HIMAAO, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(173,134,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LA PURISIMA, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,129,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MATAOROC, MINALABAC':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,215,231,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MAYAOPAYAWAN, MILAOR':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(82,229,222,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MAYDASO, MILAOR':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(169,109,212,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'NEW SAN ROQUE, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,115,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'OLD SAN ROQUE, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,204,131,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PALESTINA, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,99,168,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PAWILI, BULA':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,75,198,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PAWILI, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,69,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAGRADA, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,200,95,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAGURONG, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(187,217,18,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN AGUSTIN, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(171,223,50,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN ANTONIO, MILAOR':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,185,50,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN ANTONIO, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(23,208,33,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN ISIDRO, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,108,116,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN JOSE, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,199,227,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN JOSE-2, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,119,23,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN JOSE-3, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(52,26,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN JUAN, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(52,26,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SAN VICENTE, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,118,141,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SANTIAGO, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,236,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'STO. DOMINGO, BULA':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(210,109,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'STO. NI�O, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,222,50,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TAGBONG, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(24,210,145,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TARIRIC, MINALABAC':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,126,92,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TINANGIS, PILI':
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(212,82,70,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_webscc_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,66,208,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_webscc_2');
+        map.getPane('pane_webscc_2').style.zIndex = 402;
+        map.getPane('pane_webscc_2').style['mix-blend-mode'] = 'normal';
+        var layer_webscc_2 = new L.geoJson(json_webscc_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_webscc_2',
+            layerName: 'layer_webscc_2',
+            pane: 'pane_webscc_2',
+            onEachFeature: pop_webscc_2,
+            style: style_webscc_2_0,
+        });
+        bounds_group.addLayer(layer_webscc_2);
+        map.addLayer(layer_webscc_2);
+        function pop_webwm_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
                         <th scope="row">acct_code</th>\
                         <td>' + (feature.properties['acct_code'] !== null ? autolinker.link(feature.properties['acct_code'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">acct_no</th>\
                         <td>' + (feature.properties['acct_no'] !== null ? autolinker.link(feature.properties['acct_no'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">class_type</th>\
-                        <td>' + (feature.properties['class_type'] !== null ? autolinker.link(feature.properties['class_type'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">name</th>\
@@ -759,20 +875,28 @@
                         <td>' + (feature.properties['brgy_name'] !== null ? autolinker.link(feature.properties['brgy_name'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">mun_name</th>\
-                        <td>' + (feature.properties['mun_name'] !== null ? autolinker.link(feature.properties['mun_name'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">type_class</th>\
+                        <td>' + (feature.properties['type_class'] !== null ? autolinker.link(feature.properties['type_class'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">status</th>\
                         <td>' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <th scope="row">date_of_start</th>\
+                        <td>' + (feature.properties['date_of_start'] !== null ? autolinker.link(feature.properties['date_of_start'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">zone</th>\
+                        <td>' + (feature.properties['zone'] !== null ? autolinker.link(feature.properties['zone'].toLocaleString()) : '') + '</td>\
+                    </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_webwm_2_0() {
+        function style_webwm_3_0() {
             return {
-                pane: 'pane_webwm_2',
+                pane: 'pane_webwm_3',
                 radius: 4.0,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -786,31 +910,38 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_webwm_2');
-        map.getPane('pane_webwm_2').style.zIndex = 402;
-        map.getPane('pane_webwm_2').style['mix-blend-mode'] = 'normal';
-        var layer_webwm_2 = new L.geoJson(json_webwm_2, {
+        map.createPane('pane_webwm_3');
+        map.getPane('pane_webwm_3').style.zIndex = 403;
+        map.getPane('pane_webwm_3').style['mix-blend-mode'] = 'normal';
+        var layer_webwm_3 = new L.geoJson(json_webwm_3, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_webwm_2',
-            layerName: 'layer_webwm_2',
-            pane: 'pane_webwm_2',
-            onEachFeature: pop_webwm_2,
+            dataVar: 'json_webwm_3',
+            layerName: 'layer_webwm_3',
+            pane: 'pane_webwm_3',
+            onEachFeature: pop_webwm_3,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_webwm_2_0(feature));
+                return L.circleMarker(latlng, style_webwm_3_0(feature));
             },
         });
-        bounds_group.addLayer(layer_webwm_2);
-        map.addLayer(layer_webwm_2);
-        function pop_pipelines_3(feature, layer) {
+        bounds_group.addLayer(layer_webwm_3);
+        map.addLayer(layer_webwm_3);
+        function pop_pipelines_4(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
                     }
                 },
                 mouseover: highlightFeature,
@@ -824,16 +955,13 @@
                         <td>' + (feature.properties['size'] !== null ? autolinker.link(feature.properties['size'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">location</th>\
-                        <td>' + (feature.properties['location'] !== null ? autolinker.link(feature.properties['location'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['location'] !== null ? autolinker.link(feature.properties['location'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">status</th>\
-                        <td>' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['status'] !== null ? autolinker.link(feature.properties['status'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">lenght</th>\
-                        <td>' + (feature.properties['lenght'] !== null ? autolinker.link(feature.properties['lenght'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['lenght'] !== null ? autolinker.link(feature.properties['lenght'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['year inst.'] !== null ? autolinker.link(feature.properties['year inst.'].toLocaleString()) : '') + '</td>\
@@ -848,11 +976,11 @@
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_pipelines_3_0(feature) {
+        function style_pipelines_4_0(feature) {
             switch(String(feature.properties['size'])) {
                 case '100mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(71,114,232,1.0)',
                 dashArray: '',
@@ -865,7 +993,7 @@
                     break;
                 case '150mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(118,232,160,1.0)',
                 dashArray: '',
@@ -878,7 +1006,7 @@
                     break;
                 case '200mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(219,176,131,1.0)',
                 dashArray: '',
@@ -891,7 +1019,7 @@
                     break;
                 case '250mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(126,103,208,1.0)',
                 dashArray: '',
@@ -904,7 +1032,7 @@
                     break;
                 case '32mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(217,45,36,1.0)',
                 dashArray: '',
@@ -917,7 +1045,7 @@
                     break;
                 case '32mm hdpe':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(220,99,204,1.0)',
                 dashArray: '',
@@ -930,7 +1058,7 @@
                     break;
                 case '32mm.':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(100,217,196,1.0)',
                 dashArray: '',
@@ -943,7 +1071,7 @@
                     break;
                 case '50mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(67,176,218,1.0)',
                 dashArray: '',
@@ -956,7 +1084,7 @@
                     break;
                 case '50mm hdpe pipe':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(175,216,122,1.0)',
                 dashArray: '',
@@ -969,7 +1097,7 @@
                     break;
                 case '50mn':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(154,43,205,1.0)',
                 dashArray: '',
@@ -982,7 +1110,7 @@
                     break;
                 case '75':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(212,210,68,1.0)',
                 dashArray: '',
@@ -995,7 +1123,7 @@
                     break;
                 case '75mm':
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(73,214,58,1.0)',
                 dashArray: '',
@@ -1008,7 +1136,7 @@
                     break;
                 default:
                     return {
-                pane: 'pane_pipelines_3',
+                pane: 'pane_pipelines_4',
                 opacity: 1,
                 color: 'rgba(221,78,135,1.0)',
                 dashArray: '',
@@ -1021,20 +1149,20 @@
                     break;
             }
         }
-        map.createPane('pane_pipelines_3');
-        map.getPane('pane_pipelines_3').style.zIndex = 403;
-        map.getPane('pane_pipelines_3').style['mix-blend-mode'] = 'normal';
-        var layer_pipelines_3 = new L.geoJson(json_pipelines_3, {
+        map.createPane('pane_pipelines_4');
+        map.getPane('pane_pipelines_4').style.zIndex = 404;
+        map.getPane('pane_pipelines_4').style['mix-blend-mode'] = 'normal';
+        var layer_pipelines_4 = new L.geoJson(json_pipelines_4, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_pipelines_3',
-            layerName: 'layer_pipelines_3',
-            pane: 'pane_pipelines_3',
-            onEachFeature: pop_pipelines_3,
-            style: style_pipelines_3_0,
+            dataVar: 'json_pipelines_4',
+            layerName: 'layer_pipelines_4',
+            pane: 'pane_pipelines_4',
+            onEachFeature: pop_pipelines_4,
+            style: style_pipelines_4_0,
         });
-        bounds_group.addLayer(layer_pipelines_3);
-        map.addLayer(layer_pipelines_3);
+        bounds_group.addLayer(layer_pipelines_4);
+        map.addLayer(layer_pipelines_4);
             var title = new L.Control();
             title.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -1060,11 +1188,47 @@
                     this._div.innerHTML = 'This is a web map designed for Water Service Connection of Pili Water District. ';
             };
             abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
         var baseMaps = {};
-        L.control.layers(baseMaps,{'pipelines<br /><table><tr><td style="text-align: center;"><img src="legend/pipelines_3_100mm0.png" /></td><td>100mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_150mm1.png" /></td><td>150mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_200mm2.png" /></td><td>200mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_250mm3.png" /></td><td>250mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mm4.png" /></td><td>32mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mmhdpe5.png" /></td><td>32mm hdpe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mm6.png" /></td><td>32mm.</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mm7.png" /></td><td>50mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mmhdpepipe8.png" /></td><td>50mm hdpe pipe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mn9.png" /></td><td>50mn</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_7510.png" /></td><td>75</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_75mm11.png" /></td><td>75mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_12.png" /></td><td></td></tr></table>': layer_pipelines_3,'<img src="legend/webwm_2.png" /> web wm': layer_webwm_2,'web sc<br /><table><tr><td style="text-align: center;"><img src="legend/websc_1_ANAYAN0.png" /></td><td>ANAYAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_AYUGAN1.png" /></td><td>AYUGAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_BAGONGSIRANG2.png" /></td><td>BAGONG SIRANG</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_BANASI3.png" /></td><td>BANASI</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_BINANUAANAN4.png" /></td><td>BINANUAANAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_BINOBONG5.png" /></td><td>BINOBONG</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_CADLAN6.png" /></td><td>CADLAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_CADLAN7.png" /></td><td>CADLAN  </td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_CAPUCNASAN8.png" /></td><td>CAPUCNASAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_CAROYROYAN9.png" /></td><td>CAROYROYAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_CURRY10.png" /></td><td>CURRY</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_DELROSARIO11.png" /></td><td>DEL ROSARIO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_HIMAAO12.png" /></td><td>HIMAAO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_LAPURISIMA13.png" /></td><td>LA PURISIMA</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_MATAOROC14.png" /></td><td>MATAOROC</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_MAYAOPAYAWAN15.png" /></td><td>MAYAOPAYAWAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_MAYDASO16.png" /></td><td>MAYDASO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_NEWSANROQUE17.png" /></td><td>NEW SAN ROQUE</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_OLDSANROQUE18.png" /></td><td>OLD SAN ROQUE</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_PALESTINA19.png" /></td><td>PALESTINA</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_PAWILI20.png" /></td><td>PAWILI</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SAGRADA21.png" /></td><td>SAGRADA</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SAGURONG22.png" /></td><td>SAGURONG</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANAGUSTIN23.png" /></td><td>SAN AGUSTIN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANANTONIO24.png" /></td><td>SAN ANTONIO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANISIDRO25.png" /></td><td>SAN ISIDRO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANJOSE26.png" /></td><td>SAN JOSE</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANJOSE227.png" /></td><td>SAN JOSE-2</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANJOSE328.png" /></td><td>SAN JOSE-3</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANJUAN29.png" /></td><td>SAN JUAN</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANVICENTE30.png" /></td><td>SAN VICENTE</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_SANTIAGO31.png" /></td><td>SANTIAGO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_STODOMINGO32.png" /></td><td>STO. DOMINGO</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_STONIO33.png" /></td><td>STO. NI�O</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_TAGBONG34.png" /></td><td>TAGBONG</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_TARIRIC35.png" /></td><td>TARIRIC</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_TINANGIS36.png" /></td><td>TINANGIS</td></tr><tr><td style="text-align: center;"><img src="legend/websc_1_37.png" /></td><td></td></tr></table>': layer_websc_1,"google earth satellite": layer_googleearthsatellite_0,}).addTo(map);
+        L.control.layers(baseMaps,{'pipelines<br /><table><tr><td style="text-align: center;"><img src="legend/pipelines_4_100mm0.png" /></td><td>100mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_150mm1.png" /></td><td>150mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_200mm2.png" /></td><td>200mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_250mm3.png" /></td><td>250mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_32mm4.png" /></td><td>32mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_32mmhdpe5.png" /></td><td>32mm hdpe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_32mm6.png" /></td><td>32mm.</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_50mm7.png" /></td><td>50mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_50mmhdpepipe8.png" /></td><td>50mm hdpe pipe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_50mn9.png" /></td><td>50mn</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_7510.png" /></td><td>75</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_75mm11.png" /></td><td>75mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_12.png" /></td><td></td></tr></table>': layer_pipelines_4,'<img src="legend/webwm_3.png" /> web wm': layer_webwm_3,'web scc<br /><table><tr><td style="text-align: center;"><img src="legend/webscc_2_ANAYANPILI0.png" /></td><td>ANAYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_AYUGANOCAMPO1.png" /></td><td>AYUGAN, OCAMPO</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BAGONGSIRANGPILI2.png" /></td><td>BAGONG SIRANG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BANASIBULA3.png" /></td><td>BANASI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BINANUAANANPILI4.png" /></td><td>BINANUAANAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BINOBONGPILI5.png" /></td><td>BINOBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CADLANPILI6.png" /></td><td>CADLAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CAPUCNASANMILAOR7.png" /></td><td>CAPUCNASAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CAROYROYANPILI8.png" /></td><td>CAROYROYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CURRYPILI9.png" /></td><td>CURRY, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_DELROSARIONAGA10.png" /></td><td>DEL ROSARIO, NAGA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_DELROSARIOPILI11.png" /></td><td>DEL ROSARIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_HIMAAOPILI12.png" /></td><td>HIMAAO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_LAPURISIMAPILI13.png" /></td><td>LA PURISIMA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_MATAOROCMINALABAC14.png" /></td><td>MATAOROC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_MAYAOPAYAWANMILAOR15.png" /></td><td>MAYAOPAYAWAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_MAYDASOMILAOR16.png" /></td><td>MAYDASO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_NEWSANROQUEPILI17.png" /></td><td>NEW SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_OLDSANROQUEPILI18.png" /></td><td>OLD SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_PALESTINAPILI19.png" /></td><td>PALESTINA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_PAWILIBULA20.png" /></td><td>PAWILI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_PAWILIPILI21.png" /></td><td>PAWILI, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SAGRADAPILI22.png" /></td><td>SAGRADA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SAGURONGPILI23.png" /></td><td>SAGURONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANAGUSTINPILI24.png" /></td><td>SAN AGUSTIN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANANTONIOMILAOR25.png" /></td><td>SAN ANTONIO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANANTONIOPILI26.png" /></td><td>SAN ANTONIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANISIDROPILI27.png" /></td><td>SAN ISIDRO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJOSEPILI28.png" /></td><td>SAN JOSE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJOSE2PILI29.png" /></td><td>SAN JOSE-2, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJOSE3PILI30.png" /></td><td>SAN JOSE-3, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJUANPILI31.png" /></td><td>SAN JUAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANVICENTEPILI32.png" /></td><td>SAN VICENTE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANTIAGOPILI33.png" /></td><td>SANTIAGO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_STODOMINGOBULA34.png" /></td><td>STO. DOMINGO, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_STONIOPILI35.png" /></td><td>STO. NI�O, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_TAGBONGPILI36.png" /></td><td>TAGBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_TARIRICMINALABAC37.png" /></td><td>TARIRIC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_TINANGISPILI38.png" /></td><td>TINANGIS, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_39.png" /></td><td></td></tr></table>': layer_webscc_2,'<img src="legend/barangay_1.png" /> barangay': layer_barangay_1,"google earth satellite": layer_googleearthsatellite_0,},{collapsed:false}).addTo(map);
         setBounds();
+        var i = 0;
+        layer_barangay_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['barangay'] !== null?String('<div style="color: #ff7f00; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['barangay']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_barangay_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_webscc_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_webscc_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
         map.addControl(new L.Control.Search({
-            layer: layer_websc_1,
+            layer: layer_webwm_3,
             initial: false,
             hideMarkerOnCollapse: true,
             propertyName: 'name'}));
@@ -1089,7 +1253,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"mun_name": "str","brgy_name": "str"};
+        var Filters = {"brgy_name": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -1176,44 +1340,35 @@
             }
           this[lyr["options"]["layerName"]].clearLayers();
           this[lyr["options"]["layerName"]].addData(features);
+        var i = 0;
+        layer_barangay_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['barangay'] !== null?String('<div style="color: #ff7f00; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['barangay']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_barangay_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_webscc_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_webscc_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
           }
           })
         }
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_mun_name = document.createElement('div');
-            div_mun_name.id = "div_mun_name";
-            div_mun_name.className= "filterselect";
-            document.getElementById("menu").appendChild(div_mun_name);
-            sel_mun_name = document.createElement('select');
-            sel_mun_name.multiple = true;
-            sel_mun_name.size = 6;
-            sel_mun_name.id = "sel_mun_name";
-            var mun_name_options_str = "<option value='' unselected></option>";
-            sel_mun_name.onchange = function(){filterFunc()};
-            mun_name_options_str  += '<option value="BULA">BULA</option>';
-            mun_name_options_str  += '<option value="MILAOR">MILAOR</option>';
-            mun_name_options_str  += '<option value="MINALABAC">MINALABAC</option>';
-            mun_name_options_str  += '<option value="NAGA">NAGA</option>';
-            mun_name_options_str  += '<option value="OCAMPO">OCAMPO</option>';
-            mun_name_options_str  += '<option value="PILI">PILI</option>';
-            sel_mun_name.innerHTML = mun_name_options_str;
-            div_mun_name.appendChild(sel_mun_name);
-            var lab_mun_name = document.createElement('div');
-            lab_mun_name.innerHTML = 'mun_name';
-            lab_mun_name.className = 'filterlabel';
-            div_mun_name.appendChild(lab_mun_name);
-            var reset_mun_name = document.createElement('div');
-            reset_mun_name.innerHTML = 'clear filter';
-            reset_mun_name.className = 'filterlabel';
-            reset_mun_name.onclick = function() {
-                var options = document.getElementById("sel_mun_name").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_mun_name.appendChild(reset_mun_name);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
             var div_brgy_name = document.createElement('div');
@@ -1226,43 +1381,45 @@
             sel_brgy_name.id = "sel_brgy_name";
             var brgy_name_options_str = "<option value='' unselected></option>";
             sel_brgy_name.onchange = function(){filterFunc()};
-            brgy_name_options_str  += '<option value="ANAYAN">ANAYAN</option>';
-            brgy_name_options_str  += '<option value="AYUGAN">AYUGAN</option>';
-            brgy_name_options_str  += '<option value="BAGONG SIRANG">BAGONG SIRANG</option>';
-            brgy_name_options_str  += '<option value="BANASI">BANASI</option>';
-            brgy_name_options_str  += '<option value="BINANUAANAN">BINANUAANAN</option>';
-            brgy_name_options_str  += '<option value="BINOBONG">BINOBONG</option>';
-            brgy_name_options_str  += '<option value="CADLAN">CADLAN</option>';
-            brgy_name_options_str  += '<option value="CADLAN  ">CADLAN  </option>';
-            brgy_name_options_str  += '<option value="CAPUCNASAN">CAPUCNASAN</option>';
-            brgy_name_options_str  += '<option value="CAROYROYAN">CAROYROYAN</option>';
-            brgy_name_options_str  += '<option value="CURRY">CURRY</option>';
-            brgy_name_options_str  += '<option value="DEL ROSARIO">DEL ROSARIO</option>';
-            brgy_name_options_str  += '<option value="HIMAAO">HIMAAO</option>';
-            brgy_name_options_str  += '<option value="LA PURISIMA">LA PURISIMA</option>';
-            brgy_name_options_str  += '<option value="MATAOROC">MATAOROC</option>';
-            brgy_name_options_str  += '<option value="MAYAOPAYAWAN">MAYAOPAYAWAN</option>';
-            brgy_name_options_str  += '<option value="MAYDASO">MAYDASO</option>';
-            brgy_name_options_str  += '<option value="NEW SAN ROQUE">NEW SAN ROQUE</option>';
-            brgy_name_options_str  += '<option value="OLD SAN ROQUE">OLD SAN ROQUE</option>';
-            brgy_name_options_str  += '<option value="PALESTINA">PALESTINA</option>';
-            brgy_name_options_str  += '<option value="PAWILI">PAWILI</option>';
-            brgy_name_options_str  += '<option value="SAGRADA">SAGRADA</option>';
-            brgy_name_options_str  += '<option value="SAGURONG">SAGURONG</option>';
-            brgy_name_options_str  += '<option value="SAN AGUSTIN">SAN AGUSTIN</option>';
-            brgy_name_options_str  += '<option value="SAN ANTONIO">SAN ANTONIO</option>';
-            brgy_name_options_str  += '<option value="SAN ISIDRO">SAN ISIDRO</option>';
-            brgy_name_options_str  += '<option value="SAN JOSE">SAN JOSE</option>';
-            brgy_name_options_str  += '<option value="SAN JOSE-2">SAN JOSE-2</option>';
-            brgy_name_options_str  += '<option value="SAN JOSE-3">SAN JOSE-3</option>';
-            brgy_name_options_str  += '<option value="SAN JUAN">SAN JUAN</option>';
-            brgy_name_options_str  += '<option value="SAN VICENTE">SAN VICENTE</option>';
-            brgy_name_options_str  += '<option value="SANTIAGO">SANTIAGO</option>';
-            brgy_name_options_str  += '<option value="STO. DOMINGO">STO. DOMINGO</option>';
-            brgy_name_options_str  += '<option value="STO. NI�O">STO. NI�O</option>';
-            brgy_name_options_str  += '<option value="TAGBONG">TAGBONG</option>';
-            brgy_name_options_str  += '<option value="TARIRIC">TARIRIC</option>';
-            brgy_name_options_str  += '<option value="TINANGIS">TINANGIS</option>';
+            brgy_name_options_str  += '<option value="ANAYAN, PILI">ANAYAN, PILI</option>';
+            brgy_name_options_str  += '<option value="AYUGAN, OCAMPO">AYUGAN, OCAMPO</option>';
+            brgy_name_options_str  += '<option value="BAGONG SIRANG, PILI">BAGONG SIRANG, PILI</option>';
+            brgy_name_options_str  += '<option value="BANASI, BULA">BANASI, BULA</option>';
+            brgy_name_options_str  += '<option value="BINANUAANAN, PILI">BINANUAANAN, PILI</option>';
+            brgy_name_options_str  += '<option value="BINOBONG, PILI">BINOBONG, PILI</option>';
+            brgy_name_options_str  += '<option value="CADLAN, PILI">CADLAN, PILI</option>';
+            brgy_name_options_str  += '<option value="CAPUCNASAN, MILAOR">CAPUCNASAN, MILAOR</option>';
+            brgy_name_options_str  += '<option value="CAROYROYAN, PILI">CAROYROYAN, PILI</option>';
+            brgy_name_options_str  += '<option value="CURRY, PILI">CURRY, PILI</option>';
+            brgy_name_options_str  += '<option value="DEL ROSARIO, NAGA">DEL ROSARIO, NAGA</option>';
+            brgy_name_options_str  += '<option value="DEL ROSARIO, PILI">DEL ROSARIO, PILI</option>';
+            brgy_name_options_str  += '<option value="HIMAAO, PILI">HIMAAO, PILI</option>';
+            brgy_name_options_str  += '<option value="LA PURISIMA, PILI">LA PURISIMA, PILI</option>';
+            brgy_name_options_str  += '<option value="MATAOROC, MINALABAC">MATAOROC, MINALABAC</option>';
+            brgy_name_options_str  += '<option value="MAYAOPAYAWAN, MILAOR">MAYAOPAYAWAN, MILAOR</option>';
+            brgy_name_options_str  += '<option value="MAYDASO, MILAOR">MAYDASO, MILAOR</option>';
+            brgy_name_options_str  += '<option value="NEW SAN ROQUE, PILI">NEW SAN ROQUE, PILI</option>';
+            brgy_name_options_str  += '<option value="OLD SAN ROQUE, PILI">OLD SAN ROQUE, PILI</option>';
+            brgy_name_options_str  += '<option value="PALESTINA, PILI">PALESTINA, PILI</option>';
+            brgy_name_options_str  += '<option value="PAWILI, BULA">PAWILI, BULA</option>';
+            brgy_name_options_str  += '<option value="PAWILI, PILI">PAWILI, PILI</option>';
+            brgy_name_options_str  += '<option value="SAGRADA, PILI">SAGRADA, PILI</option>';
+            brgy_name_options_str  += '<option value="SAGURONG, PILI">SAGURONG, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN AGUSTIN, PILI">SAN AGUSTIN, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN ANTONIO, MILAOR">SAN ANTONIO, MILAOR</option>';
+            brgy_name_options_str  += '<option value="SAN ANTONIO, PILI">SAN ANTONIO, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN ISIDRO, PILI">SAN ISIDRO, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN JOSE, PILI">SAN JOSE, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN JOSE-2, PILI">SAN JOSE-2, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN JOSE-3, PILI">SAN JOSE-3, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN JUAN, PILI">SAN JUAN, PILI</option>';
+            brgy_name_options_str  += '<option value="SAN VICENTE, PILI">SAN VICENTE, PILI</option>';
+            brgy_name_options_str  += '<option value="SANTIAGO, PILI">SANTIAGO, PILI</option>';
+            brgy_name_options_str  += '<option value="STO. DOMINGO, BULA">STO. DOMINGO, BULA</option>';
+            brgy_name_options_str  += '<option value="STO. NI�O, PILI">STO. NI�O, PILI</option>';
+            brgy_name_options_str  += '<option value="TAGBONG, PILI">TAGBONG, PILI</option>';
+            brgy_name_options_str  += '<option value="TARIRIC, MINALABAC">TARIRIC, MINALABAC</option>';
+            brgy_name_options_str  += '<option value="TINANGIS, PILI">TINANGIS, PILI</option>';
             sel_brgy_name.innerHTML = brgy_name_options_str;
             div_brgy_name.appendChild(sel_brgy_name);
             var lab_brgy_name = document.createElement('div');
@@ -1280,7 +1437,16 @@
                 filterFunc();
             };
             div_brgy_name.appendChild(reset_brgy_name);
+        resetLabels([layer_barangay_1,layer_webscc_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_barangay_1,layer_webscc_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_barangay_1,layer_webscc_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_barangay_1,layer_webscc_2]);
+        });
         </script>
     </body>
 </html>
-
