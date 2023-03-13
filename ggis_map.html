@@ -8,8 +8,10 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/filter.css">
 <link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
@@ -33,9 +35,11 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="js/proj4.js"></script>
         <script src="js/proj4leaflet.js"></script>
+        <script src="js/leaflet-search.js"></script>
         <script src="js/tailDT.js"></script>
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
@@ -67,7 +71,7 @@
             continuousWorld: false,
             worldCopyJump: false, 
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[13.535623323649443,123.19812691025703],[13.621696695113314,123.36099160120222]]);
+        }).fitBounds([[13.519492166761715,123.1956450488838],[13.605563832825398,123.35849776355556]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -1125,9 +1129,26 @@
                     this._div.innerHTML = 'This is a web map designed for Water Service Connection of Pili Water District. ';
             };
             abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
         var baseMaps = {};
         L.control.layers(baseMaps,{'pipelines<br /><table><tr><td style="text-align: center;"><img src="legend/pipelines_3_100mm0.png" /></td><td>100mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_150mm1.png" /></td><td>150mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_200mm2.png" /></td><td>200mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_250mm3.png" /></td><td>250mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mm4.png" /></td><td>32mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mmhdpe5.png" /></td><td>32mm hdpe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mm6.png" /></td><td>32mm.</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mm7.png" /></td><td>50mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mmhdpepipe8.png" /></td><td>50mm hdpe pipe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mn9.png" /></td><td>50mn</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_7510.png" /></td><td>75</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_75mm11.png" /></td><td>75mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_12.png" /></td><td></td></tr></table>': layer_pipelines_3,'<img src="legend/webwm_2.png" /> web wm': layer_webwm_2,'web scc<br /><table><tr><td style="text-align: center;"><img src="legend/webscc_1_ANAYANPILI0.png" /></td><td>ANAYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_AYUGANOCAMPO1.png" /></td><td>AYUGAN, OCAMPO</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BAGONGSIRANGPILI2.png" /></td><td>BAGONG SIRANG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BANASIBULA3.png" /></td><td>BANASI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BINANUAANANPILI4.png" /></td><td>BINANUAANAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BINOBONGPILI5.png" /></td><td>BINOBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CADLANPILI6.png" /></td><td>CADLAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CAPUCNASANMILAOR7.png" /></td><td>CAPUCNASAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CAROYROYANPILI8.png" /></td><td>CAROYROYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CURRYPILI9.png" /></td><td>CURRY, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_DELROSARIONAGA10.png" /></td><td>DEL ROSARIO, NAGA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_DELROSARIOPILI11.png" /></td><td>DEL ROSARIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_HIMAAOPILI12.png" /></td><td>HIMAAO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_LAPURISIMAPILI13.png" /></td><td>LA PURISIMA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_MATAOROCMINALABAC14.png" /></td><td>MATAOROC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_MAYAOPAYAWANMILAOR15.png" /></td><td>MAYAOPAYAWAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_MAYDASOMILAOR16.png" /></td><td>MAYDASO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_NEWSANROQUEPILI17.png" /></td><td>NEW SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_OLDSANROQUEPILI18.png" /></td><td>OLD SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_PALESTINAPILI19.png" /></td><td>PALESTINA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_PAWILIBULA20.png" /></td><td>PAWILI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_PAWILIPILI21.png" /></td><td>PAWILI, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SAGRADAPILI22.png" /></td><td>SAGRADA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SAGURONGPILI23.png" /></td><td>SAGURONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANAGUSTINPILI24.png" /></td><td>SAN AGUSTIN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANANTONIOMILAOR25.png" /></td><td>SAN ANTONIO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANANTONIOPILI26.png" /></td><td>SAN ANTONIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANISIDROPILI27.png" /></td><td>SAN ISIDRO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJOSEPILI28.png" /></td><td>SAN JOSE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJOSE2PILI29.png" /></td><td>SAN JOSE-2, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJOSE3PILI30.png" /></td><td>SAN JOSE-3, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJUANPILI31.png" /></td><td>SAN JUAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANVICENTEPILI32.png" /></td><td>SAN VICENTE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANTIAGOPILI33.png" /></td><td>SANTIAGO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_STODOMINGOBULA34.png" /></td><td>STO. DOMINGO, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_STONIOPILI35.png" /></td><td>STO. NI�O, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_TAGBONGPILI36.png" /></td><td>TAGBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_TARIRICMINALABAC37.png" /></td><td>TARIRIC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_TINANGISPILI38.png" /></td><td>TINANGIS, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_39.png" /></td><td></td></tr></table>': layer_webscc_1,"google earth satellite": layer_googleearthsatellite_0,}).addTo(map);
         setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_webscc_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'name'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
         var mapDiv = document.getElementById('map');
         var row = document.createElement('div');
         row.className="row";
