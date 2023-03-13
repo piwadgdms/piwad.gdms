@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/filter.css">
 <link rel="stylesheet" href="css/nouislider.min.css">
-        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
@@ -21,7 +20,7 @@
             margin: 0;
         }
         </style>
-        <title>PIWAD|GDMS MAP</title>
+        <title>Pili Water District</title>
     </head>
     <body>
         <div id="map">
@@ -35,7 +34,6 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="js/proj4.js"></script>
         <script src="js/proj4leaflet.js"></script>
@@ -43,10 +41,9 @@
         <script src="js/tailDT.js"></script>
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
-        <script src="data/barangay_1.js"></script>
-        <script src="data/webscc_2.js"></script>
-        <script src="data/webwm_3.js"></script>
-        <script src="data/pipelines_4.js"></script>
+        <script src="data/webscc_1.js"></script>
+        <script src="data/webwm_2.js"></script>
+        <script src="data/pipelines_3.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -72,7 +69,7 @@
             continuousWorld: false,
             worldCopyJump: false, 
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[13.534659049119247,123.20151008033227],[13.620671207871654,123.31784919732384]]);
+        }).fitBounds([[13.522092655017417,123.2012754679464],[13.608167967311722,123.36413192063807]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -105,7 +102,7 @@
         });
         layer_googleearthsatellite_0;
         map.addLayer(layer_googleearthsatellite_0);
-        function pop_barangay_1(feature, layer) {
+        function pop_webscc_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -123,68 +120,11 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">barangay</th>\
-                        <td>' + (feature.properties['barangay'] !== null ? autolinker.link(feature.properties['barangay'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
-        }
-
-        function style_barangay_1_0() {
-            return {
-                pane: 'pane_barangay_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(0,0,0,0.0)',
-                interactive: false,
-            }
-        }
-        map.createPane('pane_barangay_1');
-        map.getPane('pane_barangay_1').style.zIndex = 401;
-        map.getPane('pane_barangay_1').style['mix-blend-mode'] = 'normal';
-        var layer_barangay_1 = new L.geoJson(json_barangay_1, {
-            attribution: '',
-            interactive: false,
-            dataVar: 'json_barangay_1',
-            layerName: 'layer_barangay_1',
-            pane: 'pane_barangay_1',
-            onEachFeature: pop_barangay_1,
-            style: style_barangay_1_0,
-        });
-        bounds_group.addLayer(layer_barangay_1);
-        map.addLayer(layer_barangay_1);
-        function pop_webscc_2(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    for (i in e.target._eventParents) {
-                        e.target._eventParents[i].resetStyle(e.target);
-                    }
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Account Code</th>\
+                        <th scope="row">acct_code</th>\
                         <td>' + (feature.properties['acct_code'] !== null ? autolinker.link(feature.properties['acct_code'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Remarks</th>\
+                        <th scope="row">remarks</th>\
                         <td>' + (feature.properties['remarks'] !== null ? autolinker.link(feature.properties['remarks'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -219,11 +159,11 @@
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_webscc_2_0(feature) {
+        function style_webscc_1_0(feature) {
             switch(String(feature.properties['brgy_name'])) {
                 case 'ANAYAN, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -238,7 +178,7 @@
                     break;
                 case 'AYUGAN, OCAMPO':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -253,7 +193,7 @@
                     break;
                 case 'BAGONG SIRANG, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -268,7 +208,7 @@
                     break;
                 case 'BANASI, BULA':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -283,7 +223,7 @@
                     break;
                 case 'BINANUAANAN, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -298,7 +238,7 @@
                     break;
                 case 'BINOBONG, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -313,7 +253,7 @@
                     break;
                 case 'CADLAN, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -328,7 +268,7 @@
                     break;
                 case 'CAPUCNASAN, MILAOR':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -343,7 +283,7 @@
                     break;
                 case 'CAROYROYAN, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -358,7 +298,7 @@
                     break;
                 case 'CURRY, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -373,7 +313,7 @@
                     break;
                 case 'DEL ROSARIO, NAGA':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -388,7 +328,7 @@
                     break;
                 case 'DEL ROSARIO, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -403,7 +343,7 @@
                     break;
                 case 'HIMAAO, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -418,7 +358,7 @@
                     break;
                 case 'LA PURISIMA, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -433,7 +373,7 @@
                     break;
                 case 'MATAOROC, MINALABAC':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -448,7 +388,7 @@
                     break;
                 case 'MAYAOPAYAWAN, MILAOR':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -463,7 +403,7 @@
                     break;
                 case 'MAYDASO, MILAOR':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -478,7 +418,7 @@
                     break;
                 case 'NEW SAN ROQUE, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -493,7 +433,7 @@
                     break;
                 case 'OLD SAN ROQUE, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -508,7 +448,7 @@
                     break;
                 case 'PALESTINA, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -523,7 +463,7 @@
                     break;
                 case 'PAWILI, BULA':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -538,7 +478,7 @@
                     break;
                 case 'PAWILI, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -553,7 +493,7 @@
                     break;
                 case 'SAGRADA, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -568,7 +508,7 @@
                     break;
                 case 'SAGURONG, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -583,7 +523,7 @@
                     break;
                 case 'SAN AGUSTIN, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -598,7 +538,7 @@
                     break;
                 case 'SAN ANTONIO, MILAOR':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -613,7 +553,7 @@
                     break;
                 case 'SAN ANTONIO, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -628,7 +568,7 @@
                     break;
                 case 'SAN ISIDRO, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -643,7 +583,7 @@
                     break;
                 case 'SAN JOSE, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -658,7 +598,7 @@
                     break;
                 case 'SAN JOSE-2, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -673,7 +613,7 @@
                     break;
                 case 'SAN JOSE-3, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -688,7 +628,7 @@
                     break;
                 case 'SAN JUAN, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -703,7 +643,7 @@
                     break;
                 case 'SAN VICENTE, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -718,7 +658,7 @@
                     break;
                 case 'SANTIAGO, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -733,7 +673,7 @@
                     break;
                 case 'STO. DOMINGO, BULA':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -748,7 +688,7 @@
                     break;
                 case 'STO. NI�O, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -763,7 +703,7 @@
                     break;
                 case 'TAGBONG, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -778,7 +718,7 @@
                     break;
                 case 'TARIRIC, MINALABAC':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -793,7 +733,7 @@
                     break;
                 case 'TINANGIS, PILI':
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -808,7 +748,7 @@
                     break;
                 default:
                     return {
-                pane: 'pane_webscc_2',
+                pane: 'pane_webscc_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -823,21 +763,21 @@
                     break;
             }
         }
-        map.createPane('pane_webscc_2');
-        map.getPane('pane_webscc_2').style.zIndex = 402;
-        map.getPane('pane_webscc_2').style['mix-blend-mode'] = 'normal';
-        var layer_webscc_2 = new L.geoJson(json_webscc_2, {
+        map.createPane('pane_webscc_1');
+        map.getPane('pane_webscc_1').style.zIndex = 401;
+        map.getPane('pane_webscc_1').style['mix-blend-mode'] = 'normal';
+        var layer_webscc_1 = new L.geoJson(json_webscc_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_webscc_2',
-            layerName: 'layer_webscc_2',
-            pane: 'pane_webscc_2',
-            onEachFeature: pop_webscc_2,
-            style: style_webscc_2_0,
+            dataVar: 'json_webscc_1',
+            layerName: 'layer_webscc_1',
+            pane: 'pane_webscc_1',
+            onEachFeature: pop_webscc_1,
+            style: style_webscc_1_0,
         });
-        bounds_group.addLayer(layer_webscc_2);
-        map.addLayer(layer_webscc_2);
-        function pop_webwm_3(feature, layer) {
+        bounds_group.addLayer(layer_webscc_1);
+        map.addLayer(layer_webscc_1);
+        function pop_webwm_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -894,9 +834,9 @@
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_webwm_3_0() {
+        function style_webwm_2_0() {
             return {
-                pane: 'pane_webwm_3',
+                pane: 'pane_webwm_2',
                 radius: 4.0,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -910,27 +850,27 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_webwm_3');
-        map.getPane('pane_webwm_3').style.zIndex = 403;
-        map.getPane('pane_webwm_3').style['mix-blend-mode'] = 'normal';
-        var layer_webwm_3 = new L.geoJson(json_webwm_3, {
+        map.createPane('pane_webwm_2');
+        map.getPane('pane_webwm_2').style.zIndex = 402;
+        map.getPane('pane_webwm_2').style['mix-blend-mode'] = 'normal';
+        var layer_webwm_2 = new L.geoJson(json_webwm_2, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_webwm_3',
-            layerName: 'layer_webwm_3',
-            pane: 'pane_webwm_3',
-            onEachFeature: pop_webwm_3,
+            dataVar: 'json_webwm_2',
+            layerName: 'layer_webwm_2',
+            pane: 'pane_webwm_2',
+            onEachFeature: pop_webwm_2,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_webwm_3_0(feature));
+                return L.circleMarker(latlng, style_webwm_2_0(feature));
             },
         });
-        bounds_group.addLayer(layer_webwm_3);
-        map.addLayer(layer_webwm_3);
-        function pop_pipelines_4(feature, layer) {
+        bounds_group.addLayer(layer_webwm_2);
+        map.addLayer(layer_webwm_2);
+        function pop_pipelines_3(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -976,11 +916,11 @@
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_pipelines_4_0(feature) {
+        function style_pipelines_3_0(feature) {
             switch(String(feature.properties['size'])) {
                 case '100mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(71,114,232,1.0)',
                 dashArray: '',
@@ -993,7 +933,7 @@
                     break;
                 case '150mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(118,232,160,1.0)',
                 dashArray: '',
@@ -1006,7 +946,7 @@
                     break;
                 case '200mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(219,176,131,1.0)',
                 dashArray: '',
@@ -1019,7 +959,7 @@
                     break;
                 case '250mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(126,103,208,1.0)',
                 dashArray: '',
@@ -1032,7 +972,7 @@
                     break;
                 case '32mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(217,45,36,1.0)',
                 dashArray: '',
@@ -1045,7 +985,7 @@
                     break;
                 case '32mm hdpe':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(220,99,204,1.0)',
                 dashArray: '',
@@ -1058,7 +998,7 @@
                     break;
                 case '32mm.':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(100,217,196,1.0)',
                 dashArray: '',
@@ -1071,7 +1011,7 @@
                     break;
                 case '50mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(67,176,218,1.0)',
                 dashArray: '',
@@ -1084,7 +1024,7 @@
                     break;
                 case '50mm hdpe pipe':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(175,216,122,1.0)',
                 dashArray: '',
@@ -1097,7 +1037,7 @@
                     break;
                 case '50mn':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(154,43,205,1.0)',
                 dashArray: '',
@@ -1110,7 +1050,7 @@
                     break;
                 case '75':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(212,210,68,1.0)',
                 dashArray: '',
@@ -1123,7 +1063,7 @@
                     break;
                 case '75mm':
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(73,214,58,1.0)',
                 dashArray: '',
@@ -1136,7 +1076,7 @@
                     break;
                 default:
                     return {
-                pane: 'pane_pipelines_4',
+                pane: 'pane_pipelines_3',
                 opacity: 1,
                 color: 'rgba(221,78,135,1.0)',
                 dashArray: '',
@@ -1149,20 +1089,20 @@
                     break;
             }
         }
-        map.createPane('pane_pipelines_4');
-        map.getPane('pane_pipelines_4').style.zIndex = 404;
-        map.getPane('pane_pipelines_4').style['mix-blend-mode'] = 'normal';
-        var layer_pipelines_4 = new L.geoJson(json_pipelines_4, {
+        map.createPane('pane_pipelines_3');
+        map.getPane('pane_pipelines_3').style.zIndex = 403;
+        map.getPane('pane_pipelines_3').style['mix-blend-mode'] = 'normal';
+        var layer_pipelines_3 = new L.geoJson(json_pipelines_3, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_pipelines_4',
-            layerName: 'layer_pipelines_4',
-            pane: 'pane_pipelines_4',
-            onEachFeature: pop_pipelines_4,
-            style: style_pipelines_4_0,
+            dataVar: 'json_pipelines_3',
+            layerName: 'layer_pipelines_3',
+            pane: 'pane_pipelines_3',
+            onEachFeature: pop_pipelines_3,
+            style: style_pipelines_3_0,
         });
-        bounds_group.addLayer(layer_pipelines_4);
-        map.addLayer(layer_pipelines_4);
+        bounds_group.addLayer(layer_pipelines_3);
+        map.addLayer(layer_pipelines_3);
             var title = new L.Control();
             title.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -1188,47 +1128,11 @@
                     this._div.innerHTML = 'This is a web map designed for Water Service Connection of Pili Water District. ';
             };
             abstract.addTo(map);
-        var osmGeocoder = new L.Control.Geocoder({
-            collapsed: true,
-            position: 'topleft',
-            text: 'Search',
-            title: 'Testing'
-        }).addTo(map);
-        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .className += ' fa fa-search';
-        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
         var baseMaps = {};
-        L.control.layers(baseMaps,{'pipelines<br /><table><tr><td style="text-align: center;"><img src="legend/pipelines_4_100mm0.png" /></td><td>100mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_150mm1.png" /></td><td>150mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_200mm2.png" /></td><td>200mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_250mm3.png" /></td><td>250mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_32mm4.png" /></td><td>32mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_32mmhdpe5.png" /></td><td>32mm hdpe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_32mm6.png" /></td><td>32mm.</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_50mm7.png" /></td><td>50mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_50mmhdpepipe8.png" /></td><td>50mm hdpe pipe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_50mn9.png" /></td><td>50mn</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_7510.png" /></td><td>75</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_75mm11.png" /></td><td>75mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_4_12.png" /></td><td></td></tr></table>': layer_pipelines_4,'<img src="legend/webwm_3.png" /> web wm': layer_webwm_3,'web scc<br /><table><tr><td style="text-align: center;"><img src="legend/webscc_2_ANAYANPILI0.png" /></td><td>ANAYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_AYUGANOCAMPO1.png" /></td><td>AYUGAN, OCAMPO</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BAGONGSIRANGPILI2.png" /></td><td>BAGONG SIRANG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BANASIBULA3.png" /></td><td>BANASI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BINANUAANANPILI4.png" /></td><td>BINANUAANAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_BINOBONGPILI5.png" /></td><td>BINOBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CADLANPILI6.png" /></td><td>CADLAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CAPUCNASANMILAOR7.png" /></td><td>CAPUCNASAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CAROYROYANPILI8.png" /></td><td>CAROYROYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_CURRYPILI9.png" /></td><td>CURRY, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_DELROSARIONAGA10.png" /></td><td>DEL ROSARIO, NAGA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_DELROSARIOPILI11.png" /></td><td>DEL ROSARIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_HIMAAOPILI12.png" /></td><td>HIMAAO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_LAPURISIMAPILI13.png" /></td><td>LA PURISIMA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_MATAOROCMINALABAC14.png" /></td><td>MATAOROC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_MAYAOPAYAWANMILAOR15.png" /></td><td>MAYAOPAYAWAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_MAYDASOMILAOR16.png" /></td><td>MAYDASO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_NEWSANROQUEPILI17.png" /></td><td>NEW SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_OLDSANROQUEPILI18.png" /></td><td>OLD SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_PALESTINAPILI19.png" /></td><td>PALESTINA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_PAWILIBULA20.png" /></td><td>PAWILI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_PAWILIPILI21.png" /></td><td>PAWILI, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SAGRADAPILI22.png" /></td><td>SAGRADA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SAGURONGPILI23.png" /></td><td>SAGURONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANAGUSTINPILI24.png" /></td><td>SAN AGUSTIN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANANTONIOMILAOR25.png" /></td><td>SAN ANTONIO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANANTONIOPILI26.png" /></td><td>SAN ANTONIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANISIDROPILI27.png" /></td><td>SAN ISIDRO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJOSEPILI28.png" /></td><td>SAN JOSE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJOSE2PILI29.png" /></td><td>SAN JOSE-2, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJOSE3PILI30.png" /></td><td>SAN JOSE-3, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANJUANPILI31.png" /></td><td>SAN JUAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANVICENTEPILI32.png" /></td><td>SAN VICENTE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_SANTIAGOPILI33.png" /></td><td>SANTIAGO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_STODOMINGOBULA34.png" /></td><td>STO. DOMINGO, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_STONIOPILI35.png" /></td><td>STO. NI�O, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_TAGBONGPILI36.png" /></td><td>TAGBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_TARIRICMINALABAC37.png" /></td><td>TARIRIC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_TINANGISPILI38.png" /></td><td>TINANGIS, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_2_39.png" /></td><td></td></tr></table>': layer_webscc_2,'<img src="legend/barangay_1.png" /> barangay': layer_barangay_1,"google earth satellite": layer_googleearthsatellite_0,},{collapsed:false}).addTo(map);
+        L.control.layers(baseMaps,{'pipelines<br /><table><tr><td style="text-align: center;"><img src="legend/pipelines_3_100mm0.png" /></td><td>100mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_150mm1.png" /></td><td>150mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_200mm2.png" /></td><td>200mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_250mm3.png" /></td><td>250mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mm4.png" /></td><td>32mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mmhdpe5.png" /></td><td>32mm hdpe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_32mm6.png" /></td><td>32mm.</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mm7.png" /></td><td>50mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mmhdpepipe8.png" /></td><td>50mm hdpe pipe</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_50mn9.png" /></td><td>50mn</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_7510.png" /></td><td>75</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_75mm11.png" /></td><td>75mm</td></tr><tr><td style="text-align: center;"><img src="legend/pipelines_3_12.png" /></td><td></td></tr></table>': layer_pipelines_3,'<img src="legend/webwm_2.png" /> web wm': layer_webwm_2,'web scc<br /><table><tr><td style="text-align: center;"><img src="legend/webscc_1_ANAYANPILI0.png" /></td><td>ANAYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_AYUGANOCAMPO1.png" /></td><td>AYUGAN, OCAMPO</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BAGONGSIRANGPILI2.png" /></td><td>BAGONG SIRANG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BANASIBULA3.png" /></td><td>BANASI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BINANUAANANPILI4.png" /></td><td>BINANUAANAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_BINOBONGPILI5.png" /></td><td>BINOBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CADLANPILI6.png" /></td><td>CADLAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CAPUCNASANMILAOR7.png" /></td><td>CAPUCNASAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CAROYROYANPILI8.png" /></td><td>CAROYROYAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_CURRYPILI9.png" /></td><td>CURRY, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_DELROSARIONAGA10.png" /></td><td>DEL ROSARIO, NAGA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_DELROSARIOPILI11.png" /></td><td>DEL ROSARIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_HIMAAOPILI12.png" /></td><td>HIMAAO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_LAPURISIMAPILI13.png" /></td><td>LA PURISIMA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_MATAOROCMINALABAC14.png" /></td><td>MATAOROC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_MAYAOPAYAWANMILAOR15.png" /></td><td>MAYAOPAYAWAN, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_MAYDASOMILAOR16.png" /></td><td>MAYDASO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_NEWSANROQUEPILI17.png" /></td><td>NEW SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_OLDSANROQUEPILI18.png" /></td><td>OLD SAN ROQUE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_PALESTINAPILI19.png" /></td><td>PALESTINA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_PAWILIBULA20.png" /></td><td>PAWILI, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_PAWILIPILI21.png" /></td><td>PAWILI, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SAGRADAPILI22.png" /></td><td>SAGRADA, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SAGURONGPILI23.png" /></td><td>SAGURONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANAGUSTINPILI24.png" /></td><td>SAN AGUSTIN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANANTONIOMILAOR25.png" /></td><td>SAN ANTONIO, MILAOR</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANANTONIOPILI26.png" /></td><td>SAN ANTONIO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANISIDROPILI27.png" /></td><td>SAN ISIDRO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJOSEPILI28.png" /></td><td>SAN JOSE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJOSE2PILI29.png" /></td><td>SAN JOSE-2, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJOSE3PILI30.png" /></td><td>SAN JOSE-3, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANJUANPILI31.png" /></td><td>SAN JUAN, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANVICENTEPILI32.png" /></td><td>SAN VICENTE, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_SANTIAGOPILI33.png" /></td><td>SANTIAGO, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_STODOMINGOBULA34.png" /></td><td>STO. DOMINGO, BULA</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_STONIOPILI35.png" /></td><td>STO. NI�O, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_TAGBONGPILI36.png" /></td><td>TAGBONG, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_TARIRICMINALABAC37.png" /></td><td>TARIRIC, MINALABAC</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_TINANGISPILI38.png" /></td><td>TINANGIS, PILI</td></tr><tr><td style="text-align: center;"><img src="legend/webscc_1_39.png" /></td><td></td></tr></table>': layer_webscc_1,"google earth satellite": layer_googleearthsatellite_0,}).addTo(map);
         setBounds();
-        var i = 0;
-        layer_barangay_1.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['barangay'] !== null?String('<div style="color: #ff7f00; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['barangay']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_barangay_1'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
-        var i = 0;
-        layer_webscc_2.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_webscc_2'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
         map.addControl(new L.Control.Search({
-            layer: layer_webwm_3,
+            layer: layer_webwm_2,
             initial: false,
             hideMarkerOnCollapse: true,
             propertyName: 'name'}));
@@ -1340,32 +1244,6 @@
             }
           this[lyr["options"]["layerName"]].clearLayers();
           this[lyr["options"]["layerName"]].addData(features);
-        var i = 0;
-        layer_barangay_1.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['barangay'] !== null?String('<div style="color: #ff7f00; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['barangay']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_barangay_1'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
-        var i = 0;
-        layer_webscc_2.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_webscc_2'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
           }
           })
         }
@@ -1437,15 +1315,15 @@
                 filterFunc();
             };
             div_brgy_name.appendChild(reset_brgy_name);
-        resetLabels([layer_barangay_1,layer_webscc_2]);
+        resetLabels([layer_webscc_1]);
         map.on("zoomend", function(){
-            resetLabels([layer_barangay_1,layer_webscc_2]);
+            resetLabels([layer_webscc_1]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_barangay_1,layer_webscc_2]);
+            resetLabels([layer_webscc_1]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_barangay_1,layer_webscc_2]);
+            resetLabels([layer_webscc_1]);
         });
         </script>
     </body>
